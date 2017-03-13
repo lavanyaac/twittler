@@ -1,0 +1,52 @@
+body{
+	background-color: #F5F8FA;
+}
+
+.tweetsSection{
+	background-color: #FFFFFF;
+	display: block;
+	width: 600px;
+	margin: 50px 500px 0px 500px;
+}
+
+.tweetContainer{
+	border: 0.25px  solid #E1E9ED;
+	border-collapse: collapse;
+	font: 15px/16px Arial,"Helvetica Neue",sans-serif;
+	height: 80px;	
+}
+
+.user, .tweettext{
+	margin: 10px;
+}
+
+.container{
+	display: block;
+	background-color: #FFFFFF;
+	height: 50px;
+	border: 0.25px  solid #E1E9ED;
+}
+nav{
+	margin-left: 400px;
+	margin-top: 5px;
+	height:100%;
+}
+.container a{
+	margin-top: 5px;
+	text-align: center;
+}
+
+.home{
+	margin:16px;
+	width:50px;
+}
+.username{
+	color: #0000;
+	padding-right: 5px;
+	font-weight : bold;
+}
+.useraddress, time{
+	color: #657786;
+	padding-right: 5px;
+	font-size : 13px;
+}
