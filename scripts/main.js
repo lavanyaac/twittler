@@ -18,7 +18,7 @@ $(document).ready(function(){
 		constructProfileSection($body);
 		constructTweetSection($body);
 		loadTweets();
-		setInterval(loadTweets, 30000);
+		setInterval(loadTweets, 15000);
 	}
 
 	function handleClick(){
@@ -30,6 +30,46 @@ $(document).ready(function(){
 		$('.home a').click(function(){
 			handleHomeClick();
 		})
+
+		$("#tweet").keyup(function(){
+			var text = $("#tweet").val();
+			(text.length>0) ? $("input.submit").removeAttr("disabled") : $("input.submit").attr("disabled","true")
+		});
+
+		$(".submit").click(function(){
+			var text = $("#tweet").val();
+			visitor = username;
+			writeTweet(text);
+			handleAddTweetBlur();
+		});	
+
+		$("#tweet").click(function(){
+			if(username !== '' && username !== 'homeuser'){
+				$("#tweet").attr('placeholder','');
+				if($("#tweet").hasClass("collapse")){
+					$("#tweet").removeClass("collapse").addClass("expand");
+					$("#tweet").animate({height: "+=50"}, 50);
+					$(".addtweet").animate({height: "+=110"}, 50,function(){
+												$("input.submit").show();
+											});
+				}
+			}
+		});
+		
+		$(window).click(function(event){
+			if(!$(event.target).parents('.addtweet').length && !$(event.target).hasClass('addtweet') ){
+				handleAddTweetBlur();
+			}	
+		});
+	}
+	function handleAddTweetBlur(){
+			$("#tweet").removeClass("expand").addClass("collapse");
+			$("input.submit").hide();
+			$("#tweet").css('height','30px');
+			$(".addtweet").css('height','65px');
+			$("#tweet").val('');
+			$("#tweet").attr('placeholder','Whats Happening?');
+	
 	}
 
 	function handleUsernameClick(clickObject){
@@ -52,11 +92,14 @@ $(document).ready(function(){
 
 	function constructProfileSection(container){
 		var $profileSection = addTag('section', container, {'class' : 'profileSection'});
+
 		var $profilePic = addTag('div', $profileSection, {'class' : 'profilepic'});
 		addTag('img', $profilePic);
+
 		var $profileStats = addTag('div', $profileSection, {'class' : 'profilestats'});
 		addTag('div', $profileStats, {'class' : 'accountname'});
 		addTag('div', $profileStats, {'class' : 'accounthandle'});
+
 		var $accountStats = addTag('div', $profileSection, {'class' : 'accountstats'});;
 		var $taccountStatsList = addTag('ul', $accountStats);
 		var $tweetStats = addTag('li', $taccountStatsList)
@@ -85,54 +128,6 @@ $(document).ready(function(){
 
 		var $submit=addTag('input',$tweet,{'type':'button','value':'Tweet','class':'submit','disabled':'true'});
 		$submit.hide();
-
-		$("#tweet").keyup(function(){
-			var text = $("#tweet").val();
-			
-			if(text.length>0){
-				$("input.submit").removeAttr("disabled");
-			}else{
-				$("input.submit").attr("disabled","true");
-			}
-		});
-
-
-		$(".submit").click(function(){
-			var text = $("#tweet").val();
-			visitor = username;
-			writeTweet(text);
-			console.log(streams.users[username]);
-			$(".addtweet").blur();
-			$("#tweet").val('');
-			$("#tweet").attr('placeholder','Whats Happening?');
-		});	
-
-
-		$("#tweet").click(function(){
-			if(username !== '' && username !== 'homeuser'){
-				$("#tweet").attr('placeholder','');
-				if($("#tweet").hasClass("collapse")){
-					$("#tweet").removeClass("collapse").addClass("expand");
-					$("#tweet").animate({
-					    height: "+=50"
-					}, 50);
-					$(".addtweet").animate({
-					    height: "+=110"
-					}, 50,function(){
-						$("input.submit").show();
-					});
-			}
-		}
-
-		});
-
-		$(".addtweet").blur(function(){
-			$("#tweet").removeClass("expand").addClass("collapse");
-			$("input.submit").hide();
-			$("#tweet").css('height','30px');
-			$(".addtweet").css('height','65px');
-			$("#tweet").attr('placeholder','Whats Happening?');
-		});
 	}
 
 	function constructTweets(container){
@@ -159,25 +154,23 @@ $(document).ready(function(){
 		username = window.location.hash;
 		var index, tweet;
       	if(username === ""){
+      		username = 'homeuser'
 	        index = streams.home.length - 1;
 	        tweetList = streams.home;
-	        $('.addtweet img').attr({'src' :userImageRef['homeuser']});
-	        $('.accountname').text('homeuser');
-	        $('.accounthandle').text('@homeuser');
-	        $('.nooftweets').text(index+1);
-	        $('.profilepic img').attr({'src' :userImageRef['homeuser']})
 	        $('#tweet').attr("disabled","true");
       	}else{
 	        username=username.slice(1);
 	        index = streams.users[username].length-1;
 	        tweetList = streams.users[username];
-	        $('.addtweet img').attr({'src' :userImageRef[username]});
-	        $('.accountname').text(username);
-	        $('.accounthandle').text('@' + username);
-	        $('.nooftweets').text(index+1);
-	        $('.profilepic img').attr({'src' :userImageRef[username]})
 	        $('#tweet').removeAttr("disabled");
       	}
+
+      	$('.addtweet img').attr({'src' :userImageRef[username]});
+        $('.accountname').text(username);
+        $('.accounthandle').text('@' + username);
+        $('.nooftweets').text(index+1);
+        $('.profilepic img').attr({'src' :userImageRef[username]})
+
       	var $displayTweet = $('.displaytweet');
       	$displayTweet.html("");
 
