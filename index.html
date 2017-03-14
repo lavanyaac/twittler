@@ -1,106 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="jquery.js"></script>
-    <script src="data_generator.js"></script>
-    <script src="moment.js"></script>
-    <link rel="stylesheet" href="main.css">
+    <script src="scripts/jquery.js"></script>
+    <script src="scripts/data_generator.js"></script>
+    <script src="scripts/moment.js"></script>
+    <script type="text/javascript" src="scripts/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
   </head>
-  <body>
-    <script>
-
-      $(document).ready(function(){
-        var $body = $('body');
-        //$body.html('');
-
-        var $header = $('<header></header>');
-        $header.addClass('container');
-        var $nav = $('<nav></nav>');
-
-        // var $headContainer = $('<div></div>');
-        // $headContainer.addClass('navbar');
-        var $div=$('<div></div>');
-        $div.addClass('home');
-        $('<i></i>').addClass("fa fa-home").appendTo($div);
-        var $a = $('<a></a>');
-
-        $a.text('Home');
-        $a.click(function(){
-            window.location.hash="";
-            loadTweets();
-        });
-        $a.appendTo($div);
-        $div.appendTo($nav);
-        $nav.appendTo($header);
-        $header.appendTo($body);
-
-
-        
-        var $tweetBlock = $('<section></section>');
-        $tweetBlock.addClass('tweetsSection');
-
-        function loadTweets(){
-          var username=window.location.hash;
-
-          
-        $('.tweetsSection').html("");
-          var index, tweet;
-          if(username === ""){
-            index = streams.home.length - 1;
-            tweetList = streams.home;
-          }else{
-            username=username.slice(1);
-            index = streams.users[username].length-1;
-            tweetList = streams.users[username];
-          }
-          
-          
-              while(index >= 0){
-                
-                var $tweet = $('<div></div>');
-                $tweet.addClass('tweetContainer');
-                tweet = tweetList[index];
-                $user = $('<div></div>');
-                $username = $('<span></span>').addClass('username').appendTo($user);
-                $anchor = $('<a></a>').text(tweet.user).appendTo($username);
-                $anchor.click(function(event){
-                  window.location.hash="#"+$(event.target).html();
-                  loadTweets();
-                });
-
-                $('<span></span>').addClass('useraddress').text('@' + tweet.user).appendTo($user);
-                $('<time></time>').addClass('tweettime').text(moment(tweet.created_at).fromNow(true)).appendTo($user);
-                $user.addClass('user');
-                $user.appendTo($tweet);
-
-                // $tweetTime = $('<time></time>');
-                // $tweetTime.text(tweet.created_at)
-                // $tweetTime.appendTo($user);
-                
-
-                $tweetText = $('<div></div>');
-                $tweetText.text(tweet.message);
-                $tweetText.addClass('tweettext');
-                $tweetText.appendTo($tweet);
-
-                $tweet.appendTo($tweetBlock);
-                index -= 1;
-              }
-        $tweetBlock.appendTo($body);
-
-        }
-
-        loadTweets();
-
-        setInterval(loadTweets, 50000);
-
-        // function refreshTweet(){
-        //   loadTweets();
-        // }
-
-      });
-
-    </script>
-  </body>
 </html>
