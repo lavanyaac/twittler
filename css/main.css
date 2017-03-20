@@ -102,10 +102,12 @@ body{
 .username:hover{
 	color: #0084B9;
 	text-decoration: underline;
+	cursor: pointer;
 }
 
 .home:hover{
 	color: #0084B9;
+	cursor: pointer;
 }
 
 .user :nth-child(n+2){
